@@ -155,9 +155,7 @@ export function MeetingDetailsPage() {
               {inviteBusy ? "Sending..." : "Send invites"}
             </Button>
           </div>
-          <div className="muted small">
-            Invites call <code>POST /meetings/:id/invite</code> when backend is configured; otherwise mock mode records a notification.
-          </div>
+
         </Card>
       </div>
     </div>
