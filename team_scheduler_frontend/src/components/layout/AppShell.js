@@ -1,23 +1,18 @@
 import React, { useMemo, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
 import { useAppData } from "../../contexts/AppDataContext";
-import { Button } from "../ui/Button";
 
 // PUBLIC_INTERFACE
 export function AppShell({ children }) {
   /** Main application shell with responsive sidebar and header. */
-  const auth = useAuth();
   const data = useAppData();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const unreadCount = useMemo(() => data.notifications.filter((n) => !n.read).length, [data.notifications]);
 
-  const onLogout = () => {
-    auth.logout();
-    navigate("/login");
-  };
+  // No-auth UI: show a simple guest identity.
+  const guest = useMemo(() => ({ name: "Guest", email: "" }), []);
 
   return (
     <div className="shell">
@@ -49,16 +44,13 @@ export function AppShell({ children }) {
         <div className="sidebar-footer">
           <div className="sidebar-user">
             <div className="avatar" aria-hidden="true">
-              {auth.user?.name?.slice(0, 1)?.toUpperCase() || "U"}
+              {guest.name.slice(0, 1).toUpperCase()}
             </div>
             <div className="user-meta">
-              <div className="user-name">{auth.user?.name || "User"}</div>
-              <div className="user-email">{auth.user?.email || ""}</div>
+              <div className="user-name">{guest.name}</div>
+              <div className="user-email">{guest.email}</div>
             </div>
           </div>
-          <Button variant="ghost" onClick={onLogout}>
-            Sign out
-          </Button>
         </div>
       </aside>
 
@@ -78,11 +70,11 @@ export function AppShell({ children }) {
             </button>
             <div className="topbar-profile">
               <div className="avatar small" aria-hidden="true">
-                {auth.user?.name?.slice(0, 1)?.toUpperCase() || "U"}
+                {guest.name.slice(0, 1).toUpperCase()}
               </div>
               <div className="profile-text">
-                <div className="profile-name">{auth.user?.name || "User"}</div>
-                <div className="profile-sub">{auth.user?.email || ""}</div>
+                <div className="profile-name">{guest.name}</div>
+                <div className="profile-sub">{guest.email}</div>
               </div>
             </div>
           </div>

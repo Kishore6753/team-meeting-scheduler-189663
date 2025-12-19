@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import App from "./App";
 
-test("renders login page by default when not authenticated", () => {
+test("renders dashboard by default", () => {
   render(<App />);
-  const heading = screen.getByText(/sign in/i);
+  const heading = screen.getByText(/dashboard/i);
   expect(heading).toBeInTheDocument();
 });

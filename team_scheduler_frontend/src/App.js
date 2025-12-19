@@ -3,12 +3,9 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import { AppDataProvider } from "./contexts/AppDataContext";
-import { ProtectedRoute } from "./routes/ProtectedRoute";
 import { AppShell } from "./components/layout/AppShell";
 import { getAppConfig } from "./config";
 
-import { LoginPage } from "./pages/LoginPage";
-import { RegisterPage } from "./pages/RegisterPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { MeetingsListPage } from "./pages/MeetingsListPage";
 import { MeetingCreatePage } from "./pages/MeetingCreatePage";
@@ -39,91 +36,72 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-
             <Route
               path="/dashboard"
               element={
-                <ProtectedRoute>
-                  <AppShell>
-                    <DashboardPage />
-                  </AppShell>
-                </ProtectedRoute>
+                <AppShell>
+                  <DashboardPage />
+                </AppShell>
               }
             />
 
             <Route
               path="/meetings"
               element={
-                <ProtectedRoute>
-                  <AppShell>
-                    <MeetingsListPage />
-                  </AppShell>
-                </ProtectedRoute>
+                <AppShell>
+                  <MeetingsListPage />
+                </AppShell>
               }
             />
             <Route
               path="/meetings/new"
               element={
-                <ProtectedRoute>
-                  <AppShell>
-                    <MeetingCreatePage />
-                  </AppShell>
-                </ProtectedRoute>
+                <AppShell>
+                  <MeetingCreatePage />
+                </AppShell>
               }
             />
             <Route
               path="/meetings/:meetingId"
               element={
-                <ProtectedRoute>
-                  <AppShell>
-                    <MeetingDetailsPage />
-                  </AppShell>
-                </ProtectedRoute>
+                <AppShell>
+                  <MeetingDetailsPage />
+                </AppShell>
               }
             />
             <Route
               path="/meetings/:meetingId/edit"
               element={
-                <ProtectedRoute>
-                  <AppShell>
-                    <MeetingEditPage />
-                  </AppShell>
-                </ProtectedRoute>
+                <AppShell>
+                  <MeetingEditPage />
+                </AppShell>
               }
             />
 
             <Route
               path="/calendar"
               element={
-                <ProtectedRoute>
-                  <AppShell>
-                    <CalendarPage />
-                  </AppShell>
-                </ProtectedRoute>
+                <AppShell>
+                  <CalendarPage />
+                </AppShell>
               }
             />
 
             <Route
               path="/notifications"
               element={
-                <ProtectedRoute>
-                  <AppShell>
-                    <NotificationsPage />
-                  </AppShell>
-                </ProtectedRoute>
+                <AppShell>
+                  <NotificationsPage />
+                </AppShell>
               }
             />
 
             <Route
               path="*"
               element={
-                <ProtectedRoute>
-                  <AppShell>
-                    <NotFoundPage />
-                  </AppShell>
-                </ProtectedRoute>
+                <AppShell>
+                  <NotFoundPage />
+                </AppShell>
               }
             />
           </Routes>

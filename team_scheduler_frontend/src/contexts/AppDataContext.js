@@ -11,10 +11,12 @@ export function AppDataProvider({ children }) {
 
   const api = useMemo(() => {
     return new ApiClient({
+      // No-auth: do not attach a token by default.
       getToken: () => auth.accessToken,
-      onAuthError: () => auth.logout(),
+      // No-auth: avoid redirect/logout loops if backend returns 401.
+      onAuthError: () => {},
     });
-  }, [auth]);
+  }, [auth.accessToken]);
 
   const [meetings, setMeetings] = useState([]);
   const [notifications, setNotifications] = useState([]);

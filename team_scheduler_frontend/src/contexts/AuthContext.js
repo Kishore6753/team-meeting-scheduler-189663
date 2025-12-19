@@ -1,41 +1,27 @@
-import React, { createContext, useContext, useMemo, useState } from "react";
+import React, { createContext, useContext, useMemo } from "react";
 
 const AuthContext = createContext(null);
 
-const STORAGE_KEY = "team_scheduler_auth";
-
 // PUBLIC_INTERFACE
 export function AuthProvider({ children }) {
-  /** Provides auth state (user/token) and helpers to login/register/logout. */
-  const [session, setSession] = useState(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : { accessToken: null, user: null };
-    } catch {
-      return { accessToken: null, user: null };
-    }
-  });
-
-  const setAndPersist = (next) => {
-    setSession(next);
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-    } catch {
-      // ignore storage failures
-    }
-  };
-
+  /** Provides a no-auth "guest session" so the rest of the app can run without tokens. */
   const value = useMemo(() => {
+    const guestUser = { id: "guest", name: "Guest", email: "" };
+
     return {
-      accessToken: session.accessToken,
-      user: session.user,
-      isAuthenticated: Boolean(session.accessToken && session.user),
+      accessToken: null,
+      user: guestUser,
+      isAuthenticated: true, // no-auth app: always allow
       // PUBLIC_INTERFACE
-      setSession: (newSession) => setAndPersist(newSession),
+      setSession: () => {
+        // no-op: auth is removed
+      },
       // PUBLIC_INTERFACE
-      logout: () => setAndPersist({ accessToken: null, user: null }),
+      logout: () => {
+        // no-op: auth is removed
+      },
     };
-  }, [session.accessToken, session.user]);
+  }, []);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
