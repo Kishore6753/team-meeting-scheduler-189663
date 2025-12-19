@@ -81,7 +81,22 @@ export function MeetingDetailsPage() {
     <div className="stack">
       <div className="page-head">
         <div>
-          <h1 className="h1">{meeting.title}</h1>
+          <h1 className="h1" style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+            <span>{meeting.title}</span>
+            {meeting.pending ? (
+              <span
+                className="badge"
+                style={{
+                  background: "rgba(100, 116, 139, 0.14)",
+                  borderColor: "rgba(100, 116, 139, 0.28)",
+                  color: "var(--text)",
+                }}
+                title="This meeting is saved locally and will sync when online."
+              >
+                Pending sync
+              </span>
+            ) : null}
+          </h1>
           <p className="muted">
             {format(new Date(meeting.startTime), "PPpp")} – {format(new Date(meeting.endTime), "p")}
             {meeting.location ? ` • ${meeting.location}` : ""}
@@ -129,9 +144,14 @@ export function MeetingDetailsPage() {
             onChange={(e) => setInviteText(e.target.value)}
             placeholder="alice@company.com, bob@company.com"
           />
+          {meeting.pending ? (
+            <div className="muted small" style={{ marginTop: 6 }}>
+              This meeting is pending sync. Invites will be available after it syncs to the server.
+            </div>
+          ) : null}
           {inviteError ? <div className="alert alert-error">{inviteError}</div> : null}
           <div className="form-actions">
-            <Button onClick={invite} disabled={inviteBusy}>
+            <Button onClick={invite} disabled={inviteBusy || meeting.pending}>
               {inviteBusy ? "Sending..." : "Send invites"}
             </Button>
           </div>

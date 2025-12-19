@@ -17,8 +17,12 @@ export function MeetingCreatePage() {
     setError(null);
     try {
       const created = await data.createMeeting(payload);
+
+      // In offline/local-first mode, created may be a local pending item (id === clientId).
+      // Either way, navigate to its details.
       navigate(`/meetings/${created.id}`);
     } catch (e) {
+      // Only surface non-network errors as blocking UI; network errors are handled via non-blocking toasts.
       setError(e?.message || "Failed to create meeting");
     } finally {
       setBusy(false);
